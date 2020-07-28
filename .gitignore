@@ -1,0 +1,11 @@
+### IntelliJ IDEA ###
+.idea/
+.idea
+*.iws
+*.iml
+*.ipr
+*.log
+*.json
+*.sqlite
+
+target/
