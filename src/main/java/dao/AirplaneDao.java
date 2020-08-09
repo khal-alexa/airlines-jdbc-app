@@ -16,5 +16,5 @@ public interface AirplaneDao {
 
     void delete(int id) throws NoSuchIdException;
 
-    List<Airplane> findByCrewFullName(Crew crew) throws DaoException;
+    List<Airplane> findByCrew(Crew crew) throws DaoException;
 }

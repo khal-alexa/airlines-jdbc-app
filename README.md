@@ -1,3 +1,6 @@
-## Home Work Project
+## Airlines: jdbc application
 
-This project created to apply theoretical knowledge of JDBC API in practice.  
+- implemented persistence layer for an application using JDBC API
+- two Entities, Airplane and Crew with many-to-many relation
+- implemented CRUD operations
+- MySQL database

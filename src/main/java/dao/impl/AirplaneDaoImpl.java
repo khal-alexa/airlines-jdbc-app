@@ -1,5 +1,7 @@
-package dao;
+package dao.impl;
 
+import dao.AirplaneDao;
+import dao.DBConnector;
 import domain.Airplane;
 import domain.Crew;
 import exceptions.DaoException;
@@ -19,20 +21,16 @@ public class AirplaneDaoImpl implements AirplaneDao {
 
     private static final String INSERT_QUERY = "INSERT INTO airplanes (code_name, model, manufacture_date, " +
             "capacity, flight_range) VALUES (?, ?, ?, ?, ?);";
-
     private static final String READ_QUERY = "SELECT * FROM airplanes;";
-
     private static final String GET_BY_CODE_QUERY = "SELECT * FROM airplanes WHERE code_name = ?;";
-
     private static final String GET_BY_CREW_NAME_QUERY = "SELECT airplanes.* FROM airplanes\n" +
             "    INNER JOIN airplanes_crews ac on airplanes.id = ac.airplanes_id\n" +
             "    INNER JOIN crews c on ac.crews_id = c.id\n" +
             "WHERE c.first_name = ? AND c.last_name = ?;";
-
     private static final String DELETE_QUERY = "DELETE FROM airplanes WHERE id = ?;";
 
     @Override
-    public void save(Airplane airplane) throws DaoException {
+    public void save(Airplane airplane) {
         try (Connection connection = connector.getConnection();
              PreparedStatement statement = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, airplane.getCodeName());
@@ -46,14 +44,13 @@ public class AirplaneDaoImpl implements AirplaneDao {
             while (rs.next()) {
                 airplane.setId(rs.getInt(1));
             }
-
         } catch (SQLException e) {
             throw new DaoException("Error while trying to save airplane", e);
         }
     }
 
     @Override
-    public Airplane findByCode(String code) throws DaoException {
+    public Airplane findByCode(String code) {
         Airplane airplane = null;
         try (Connection connection = connector.getConnection();
              PreparedStatement statement = connection.prepareStatement(GET_BY_CODE_QUERY)) {
@@ -69,7 +66,7 @@ public class AirplaneDaoImpl implements AirplaneDao {
     }
 
     @Override
-    public List<Airplane> findAll() throws DaoException {
+    public List<Airplane> findAll() {
         List<Airplane> airplanes = new ArrayList<>();
         try (Connection connection = connector.getConnection();
              Statement statement = connection.createStatement()) {
@@ -86,7 +83,7 @@ public class AirplaneDaoImpl implements AirplaneDao {
     }
 
     @Override
-    public void delete(int id) throws NoSuchIdException {
+    public void delete(int id) {
         try (Connection connection = connector.getConnection();
              PreparedStatement statement = connection.prepareStatement(DELETE_QUERY)) {
             statement.setInt(1, id);
@@ -97,7 +94,7 @@ public class AirplaneDaoImpl implements AirplaneDao {
     }
 
     @Override
-    public List<Airplane> findByCrewFullName(Crew crew) throws DaoException {
+    public List<Airplane> findByCrew(Crew crew) {
         List<Airplane> airplanes = new ArrayList<>();
         try (Connection connection = connector.getConnection();
              PreparedStatement statement = connection.prepareStatement(GET_BY_CREW_NAME_QUERY)) {

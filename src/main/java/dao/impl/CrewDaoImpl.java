@@ -1,5 +1,7 @@
-package dao;
+package dao.impl;
 
+import dao.CrewDao;
+import dao.DBConnector;
 import domain.Crew;
 import exceptions.DaoException;
 import exceptions.NoSuchIdException;
@@ -16,14 +18,12 @@ public class CrewDaoImpl implements CrewDao {
 
     private static final String INSERT_QUERY = "INSERT INTO crews (first_name, last_name, position, " +
             "birthday, citizenship) VALUES (?, ?, ?, ?, ?);";
-
     private static final String GET_BY_ID = "SELECT * FROM crews WHERE id = ?;";
-
     private static final String LINK = "INSERT INTO airplanes_crews(airplanes_id, crews_id)\n" +
             "VALUES (?, ?);";
 
     @Override
-    public void save(Crew crew) throws DaoException {
+    public void save(Crew crew) {
         try (Connection connection = connector.getConnection();
              PreparedStatement statement = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, crew.getFirstName());
@@ -43,7 +43,7 @@ public class CrewDaoImpl implements CrewDao {
     }
 
     @Override
-    public Crew findById(int id) throws NoSuchIdException {
+    public Crew findById(int id) {
         Crew crew = null;
         try (Connection connection = connector.getConnection();
              PreparedStatement statement = connection.prepareStatement(GET_BY_ID)) {
@@ -59,7 +59,7 @@ public class CrewDaoImpl implements CrewDao {
     }
 
     @Override
-    public void linkCrewToAirplane(int airplaneId, int crewId) throws DaoException {
+    public void linkCrewToAirplane(int airplaneId, int crewId) {
         try (Connection connection = connector.getConnection();
              PreparedStatement statement = connection.prepareStatement(LINK)) {
             statement.setInt(1, airplaneId);

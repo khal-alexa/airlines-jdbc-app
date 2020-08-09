@@ -5,9 +5,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBConnector {
-    private final String url = "jdbc:mysql://localhost:3306/airport?serverTimezone=UTC";
-    private final String user = "root";
-    private final String password = user;
+    private static final String URL = "jdbc:mysql://localhost:3306/airport?serverTimezone=UTC";
+    private static final String USER = "root";
+    private static final String PASSWORD = "root";
 
     private static DBConnector instance;
 
@@ -19,7 +19,7 @@ public class DBConnector {
     }
 
     public Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(url, user, password);
+        return DriverManager.getConnection(URL, USER, PASSWORD);
     }
 
 }
